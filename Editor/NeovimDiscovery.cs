@@ -20,6 +20,9 @@ namespace NeovimUnity
 
     public CodeEditor.Installation[] FindExecutables()
     {
+#if UNITY_EDITOR_WIN
+      return new CodeEditor.Installation[0];
+#endif
       if (_initialized) return _foundExecutables;
       var results = new List<CodeEditor.Installation>();
 

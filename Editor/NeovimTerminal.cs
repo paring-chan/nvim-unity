@@ -84,10 +84,19 @@ namespace NeovimUnity
 
       var args = $"--listen \"{EscapeShellPath(socketPath)}\" -c \"lua {EscapeQuote(string.Join(";", luaCode))}\"";
 
+      var template = NeovimConfig.CurrentTemplate.Replace("$(Nvim)", editorPath).Replace("$(Args)", args);
+
+      if (template.Contains("$(NvimScript)"))
+      {
+        var tmpPath = Path.GetTempFileName();
+        File.WriteAllText(tmpPath, $"\"{editorPath}\" {args}");
+        template = template.Replace("$(NvimScript)", tmpPath);
+      }
+
       var startInfo = new ProcessStartInfo
       {
         FileName = "bash",
-        Arguments = $"-l -c \"{EscapeQuote(NeovimConfig.CurrentTemplate.Replace("$(Nvim)", editorPath).Replace("$(Args)", args))}\"",
+        Arguments = $"-l -c \"{EscapeQuote(template)}\"",
         CreateNoWindow = true,
         WindowStyle = ProcessWindowStyle.Hidden,
         UseShellExecute = false,
@@ -95,6 +104,7 @@ namespace NeovimUnity
         RedirectStandardError = true,
         WorkingDirectory = Directory.GetCurrentDirectory(),
       };
+      UnityEngine.Debug.Log(startInfo.Arguments);
 
       if (File.Exists(socketPath))
         File.Delete(socketPath);

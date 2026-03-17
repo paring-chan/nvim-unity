@@ -59,10 +59,8 @@ namespace NeovimUnity
 
       if (NeovimDiscovery.CheckExecutable("neovide", out _)) result.Add(("Neovide", "neovide --neovim-bin \"$(Nvim)\" -- $(Args)"));
 
-      var shellCommand = NeovimTerminal.EscapeQuote("\"$(Nvim)\" $(Args)");
-
       var iTermPath = "/Applications/iTerm.app/Contents/MacOS/iTerm2";
-      if (File.Exists(iTermPath)) result.Add(("iTerm", $"osascript -e \"{NeovimTerminal.EscapeQuote($"tell application \"iTerm2\" to create window with default profile command \"{shellCommand}\"")}\""));
+      if (File.Exists(iTermPath)) result.Add(("iTerm", $"osascript -e \"{NeovimTerminal.EscapeQuote($"tell application \"iTerm2\" to create window with default profile command \"sh $(NvimScript)\"")}\""));
 
       _presets = result;
       return result;
