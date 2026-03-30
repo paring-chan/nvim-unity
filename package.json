@@ -1,6 +1,7 @@
 {
   "name": "moe.paring.nvim-unity",
   "displayName": "Neovim Unity",
+  "author": "paring <paringchan@proton.me>",
   "version": "1.0.0",
   "unity": "6000.3",
   "dependencies": {
