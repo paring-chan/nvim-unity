@@ -28,8 +28,11 @@ namespace NeovimUnity
 
     public void Initialize(string editorInstallationPath) { }
 
+    private static readonly string[] BlacklistedExtensions = new string[] { "unity" }; 
+
     public bool OpenProject(string filePath, int line, int column)
     {
+      if (!_generator.IsSupportedFile(filePath)) return false;
       _term.Start(filePath, line, column);
 
       return true;
